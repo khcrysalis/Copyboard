@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="25A5295e" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CBApplication" representedClassName="CBApplication" syncable="YES" codeGenerationType="class">
+        <attribute name="bundleUrl" optional="YES" attributeType="URI"/>
+        <attribute name="shouldIgnore" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="uuid" attributeType="String"/>
+        <relationship name="clipItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CBObject" inverseName="application" inverseEntity="CBObject"/>
+    </entity>
+    <entity name="CBObject" representedClassName="CBObject" syncable="YES" codeGenerationType="class">
+        <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isFavorited" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="uuid" attributeType="String"/>
+        <relationship name="application" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CBApplication" inverseName="clipItems" inverseEntity="CBApplication"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CBObjectItem" inverseName="parent" inverseEntity="CBObjectItem"/>
+    </entity>
+    <entity name="CBObjectItem" representedClassName="CBObjectItem" syncable="YES" codeGenerationType="class">
+        <attribute name="data" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" allowsCloudEncryption="YES" customClassName="[String: Data]"/>
+        <attribute name="item" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="types" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CBObject" inverseName="items" inverseEntity="CBObject"/>
+    </entity>
+</model>
