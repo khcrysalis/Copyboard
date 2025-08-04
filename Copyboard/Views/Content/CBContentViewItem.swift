@@ -89,8 +89,6 @@ class CBContentViewItem: CBBaseContentViewItem {
 		self.itemsContainerView.items = Array(items)
 		
 		switch items.count {
-		case 0:
-			titleLabel.stringValue = "Unknown"
 		case 1:
 			if let item = items.first {
 				if let string = item.stringForCompactType() {
@@ -100,11 +98,11 @@ class CBContentViewItem: CBBaseContentViewItem {
 				) {
 					titleLabel.stringValue = highestPriorityType.localizedDescription
 				} else {
-					titleLabel.stringValue = "Unknown"
+					titleLabel.stringValue = .localized("Unknown")
 				}
 			}
 		default:
-			titleLabel.stringValue = "\(items.count) Items"
+			titleLabel.stringValue = .pluralized("%@ Items", items.count)
 		}
 	}
 }

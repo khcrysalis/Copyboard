@@ -95,9 +95,9 @@ open class CBBaseContentViewItem: NSCollectionViewItem {
 				
 		let appName: String = {
 			if let url = object.application?.bundleUrl {
-				Bundle(url: url)?.name ?? "Unknown"
+				Bundle(url: url)?.name ?? .localized("Unknown")
 			} else {
-				"Unknown"
+				.localized("Unknown")
 			}
 		}()
 		

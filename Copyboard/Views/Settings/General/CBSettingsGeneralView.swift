@@ -104,12 +104,12 @@ extension CBSettingsGeneralView {
 		 */
 		
 		Section {
-			Toggle("Check for Updates Automatically", isOn: .constant(false)).disabled(true)
+			Toggle(.localized("Check for Updates Automatically"), isOn: .constant(false)).disabled(true)
 			#if !DEBUG
-			Toggle("Launch at Login", isOn: $_launchAtLogin)
+			Toggle(.localized("Launch at Login"), isOn: $_launchAtLogin)
 			#endif
-			Toggle("Copy Without Formatting", isOn: $_copyAsPlainText)
-			Toggle("Erase History on Quit", isOn: $_clearHistoryOnQuit)
+			Toggle(.localized("Copy Without Formatting"), isOn: $_copyAsPlainText)
+			Toggle(.localized("Erase History on Quit"), isOn: $_clearHistoryOnQuit)
 		}
 	}
 	
@@ -118,7 +118,7 @@ extension CBSettingsGeneralView {
 	@ViewBuilder
 	private func _notificationsSection() -> some View {
 		Section {
-			Toggle("Play Sound", isOn: $_playSoundWhenCopying)
+			Toggle(.localized("Play Sound"), isOn: $_playSoundWhenCopying)
 			/*
 			if _notificationsAllowed {
 				Toggle("Show Notification", isOn: $_displayNotificationWhenCopying)
@@ -131,8 +131,8 @@ extension CBSettingsGeneralView {
 			 */
 		} header: {
 			CBSettingsHeaderView(
-				"Sounds & Notifications",
-				subtitle: "Customize the notifications events when copying."
+				.localized("Sounds & Notifications"),
+				subtitle: .localized("Customize the notifications events when copying.")
 			)
 		}
 	}
@@ -175,23 +175,20 @@ extension CBSettingsGeneralView {
 			.disabled(_clearHistoryOnQuit)
 		} header: {
 			CBSettingsHeaderView(
-				"History",
-				subtitle: "Choose when the app priodically deletes your clipboards."
+				.localized("History"),
+				subtitle: .localized("Choose when the app priodically deletes your clipboards.")
 			)
 		}
 
 		Section {
-			Button("Erase History...") {
+			Button(.localized("Erase History...")) {
 				_isEraseAlertPresenting = true
-			}.alert("Erase", isPresented: $_isEraseAlertPresenting, actions: {
-				
-				Button("Erase", role: .destructive) {
-					StorageManager.shared.eraseHistory()
-				}
-				
-				Button("Cancel", role: .cancel) {}
+			}
+			.alert(.localized("Erase"), isPresented: $_isEraseAlertPresenting, actions: {
+				Button(.localized("Erase"), role: .destructive) { StorageManager.shared.eraseHistory() }
+				Button(.localized("Cancel"), role: .cancel) {}
 			}, message: {
-				Text("Are you sure you want to erase your history?")
+				Text(.localized("Are you sure you want to erase your history?"))
 			})
 		}
 	}
@@ -201,11 +198,11 @@ extension CBSettingsGeneralView {
 private extension ErasureTarget {
 	var label: LocalizedStringKey {
 		switch self {
-		case .day: 		"Day"
-		case .week: 	"Week"
-		case .month: 	"Month"
-		case .year: 	"Year"
-		case .forever: 	"Forever"
+		case .day: 		.localized("Day")
+		case .week: 	.localized("Week")
+		case .month: 	.localized("Month")
+		case .year: 	.localized("Year")
+		case .forever: 	.localized("Forever")
 		}
 	}
 }

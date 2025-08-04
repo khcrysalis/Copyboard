@@ -111,19 +111,19 @@ extension AppDelegate {
 	/// Easier access to the MenuBarItem menu
 	@objc func makeGeneralAppMenu() -> NSMenu {
 		let menu = NSMenu()
-		menu.addItem(NSMenuItem(title: "About \(Bundle.main.name)", action: #selector(showAboutWindow), keyEquivalent: ""))
+		menu.addItem(NSMenuItem(title: .localized("About %@", arguments: Bundle.main.name), action: #selector(showAboutWindow), keyEquivalent: ""))
 		menu.addItem(NSMenuItem.separator())
-		menu.addItem(NSMenuItem(title: "Settings…", action: #selector(showSettingsWindow), keyEquivalent: ","))
+		menu.addItem(NSMenuItem(title: .localized("Settings..."), action: #selector(showSettingsWindow), keyEquivalent: ","))
 		menu.addItem(NSMenuItem.separator())
 		
 		let isPaused = ClipboardMonitorManager.shared.isPaused
 		let pauseDuration = ClipboardMonitorManager.shared.pauseDiration
 		
-		var pauseText = "Pause \(Bundle.main.name)"
+		var pauseText: String = .localized("Pause %@", arguments: Bundle.main.name)
 		
 		if ClipboardMonitorManager.shared.isPaused {
 			if pauseDuration == 0 {
-				pauseText = "Resume \(Bundle.main.name)"
+				pauseText = .localized("Resume %@", arguments: Bundle.main.name)
 			} else {
 				let resumeDate = Date.now + pauseDuration
 				
@@ -132,7 +132,7 @@ extension AppDelegate {
 				formatter.dateStyle = .none
 				
 				let formatted = formatter.string(from: resumeDate)
-				pauseText = "Until \(formatted)"
+				pauseText = .localized("Until %@", arguments: formatted)
 			}
 		}
 		
@@ -140,11 +140,11 @@ extension AppDelegate {
 		let pauseSubmenu = NSMenu(title: pauseText)
 		
 		if isPaused {
-			let resumeItem = NSMenuItem(title: "Resume", action: #selector(unpause), keyEquivalent: "t")
+			let resumeItem = NSMenuItem(title: .localized("Resume"), action: #selector(unpause), keyEquivalent: "t")
 			resumeItem.target = self
 			pauseSubmenu.addItem(resumeItem)
 		} else {
-			let resumeItem = NSMenuItem(title: "Pause", action: #selector(pause), keyEquivalent: "t")
+			let resumeItem = NSMenuItem(title: .localized("Pause"), action: #selector(pause), keyEquivalent: "t")
 			resumeItem.target = self
 			pauseSubmenu.addItem(resumeItem)
 		}
@@ -152,14 +152,14 @@ extension AppDelegate {
 		pauseSubmenu.addItem(NSMenuItem.separator())
 		
 		let durations: [(String, TimeInterval)] = [
-			("5 minutes", 	5 * 60),
-			("10 minutes", 	10 * 60),
-			("15 minutes", 	15 * 60),
-			("30 minutes", 	30 * 60),
-			("1 hour", 		60 * 60),
-			("2 hours", 	2 * 60 * 60),
-			("4 hours", 	4 * 60 * 60),
-			("8 hours", 	8 * 60 * 60)
+			String.localizedDuration(minutes: 5),
+			String.localizedDuration(minutes: 10),
+			String.localizedDuration(minutes: 15),
+			String.localizedDuration(minutes: 30),
+			String.localizedDuration(hours: 1),
+			String.localizedDuration(hours: 2),
+			String.localizedDuration(hours: 4),
+			String.localizedDuration(hours: 8)
 		]
 		
 		for (label, seconds) in durations {
@@ -173,7 +173,7 @@ extension AppDelegate {
 		menu.addItem(pauseItem)
 		
 		menu.addItem(NSMenuItem.separator())
-		menu.addItem(NSMenuItem(title: "Quit \(Bundle.main.name)", action: #selector(NSApp.terminate(_:)), keyEquivalent: "q"))
+		menu.addItem(NSMenuItem(title: .localized("Quit %@", arguments: Bundle.main.name), action: #selector(NSApp.terminate(_:)), keyEquivalent: "q"))
 		return menu
 	}
 	

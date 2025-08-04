@@ -15,12 +15,13 @@ struct CBSettingsShortcutsView: View {
 		Form {
 			Section {
 				KeyboardShortcuts.Recorder(for: .togglePanel) {
-					Text("Show \(Bundle.main.name)")
+					Text(verbatim: .localized("Show %@", arguments: Bundle.main.name))
 				}
 				.padding(.top, 3)
 			}
 			
 			Section {
+				#warning("unfinished")
 				Text("""
 				These are the default keybinds that can be used when you're interacting with the clipboard items.
 				• Quick Copy: `1...9`
@@ -31,7 +32,7 @@ struct CBSettingsShortcutsView: View {
 			}
 			
 			Section {
-				Button("Reset shortcuts to default...") {
+				Button(.localized("Reset shortcuts to default...")) {
 					KeyboardShortcuts.reset(.togglePanel)
 				}
 			}

@@ -61,8 +61,8 @@ class CBContentView: CBBaseView {
 	lazy var unavailableView: NSHostingView<AnyView> = {
 		NSHostingView(rootView: AnyView(
 			VStack {
-				Text("No Clipboard Items").font(.title3).bold()
-				Text("Your clipboard history will appear here.")
+				Text(.localized("No Clipboard Items")).font(.title3).bold()
+				Text(.localized("Your clipboard history will appear here."))
 			}
 			.foregroundStyle(.secondary)
 			.padding()
@@ -212,7 +212,7 @@ extension CBContentView: CBCollectionViewDelegate {
 		
 		let menu = NSMenu()
 		
-		let favoriteTitle = item.isFavorited ? "Unfavorite" : "Favorite"
+		let favoriteTitle: String = item.isFavorited ? .localized("Unfavorite") : .localized("Favorite")
 		let favoriteItem = NSMenuItem(title: favoriteTitle, action: #selector(_handleFavoriteMenuItem(_:)), keyEquivalent: "")
 		favoriteItem.target = self
 		favoriteItem.representedObject = item
@@ -220,19 +220,19 @@ extension CBContentView: CBCollectionViewDelegate {
 		
 		menu.addItem(NSMenuItem.separator())
 		
-		let copyItem = NSMenuItem(title: "Copy", action: #selector(_handleCopyMenuItem(_:)), keyEquivalent: "")
+		let copyItem = NSMenuItem(title: .localized("Copy"), action: #selector(_handleCopyMenuItem(_:)), keyEquivalent: "")
 		copyItem.target = self
 		copyItem.representedObject = item
 		menu.addItem(copyItem)
 		
-		let copyPlainItem = NSMenuItem(title: "Copy Without Formatting", action: #selector(_handleCopyPlainMenuItem(_:)), keyEquivalent: "")
+		let copyPlainItem = NSMenuItem(title: .localized("Copy Without Formatting"), action: #selector(_handleCopyPlainMenuItem(_:)), keyEquivalent: "")
 		copyPlainItem.target = self
 		copyPlainItem.representedObject = item
 		menu.addItem(copyPlainItem)
 		
 		menu.addItem(NSMenuItem.separator())
 		
-		let deleteItem = NSMenuItem(title: "Delete", action: #selector(_handleDeleteMenuItem(_:)), keyEquivalent: "")
+		let deleteItem = NSMenuItem(title: .localized("Delete"), action: #selector(_handleDeleteMenuItem(_:)), keyEquivalent: "")
 		deleteItem.target = self
 		deleteItem.representedObject = item
 		menu.addItem(deleteItem)
@@ -300,9 +300,10 @@ extension CBContentView: CBSearchDelegate {
 				
 				let matchesDataValues = item.data?.values.contains { dataValue in
 					if let stringValue = String(data: dataValue, encoding: .utf8) {
-						return stringValue.range(of: trimmed, options: [.caseInsensitive, .diacriticInsensitive]) != nil
+						stringValue.range(of: trimmed, options: [.caseInsensitive, .diacriticInsensitive]) != nil
+					} else {
+						false
 					}
-					return false
 				} ?? false
 				
 				let matchesTypesArray = item.types?.contains { type in

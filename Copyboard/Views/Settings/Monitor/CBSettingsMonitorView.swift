@@ -37,20 +37,20 @@ struct CBSettingsMonitorView: View {
 			Section {
 				Toggle(isOn: $_ignoreApps) {
 					CBSettingsHeaderView(
-						"Ignore 'app' explicit markers",
-						subtitle: "Does not save content from applications such as 1Password, Keeweb, and Maccy."
+						.localized("Ignore 'app' explicit markers"),
+						subtitle: .localized("Does not save content from applications such as 1Password, Keeweb, and Maccy.")
 					)
 				}
 				Toggle(isOn: $_ignoreTransient) {
 					CBSettingsHeaderView(
-						"Ignore 'transient' markers",
-						subtitle: "Does not save content that are considered temporary."
+						.localized("Ignore 'transient' markers"),
+						subtitle: .localized("Does not save content that are considered temporary.")
 					)
 				}
 				Toggle(isOn: $_ignoreConfidential) {
 					CBSettingsHeaderView(
-						"Ignore 'confidential' markers",
-						subtitle: "Does not save content that is meant to be considered private and not stored."
+						.localized("Ignore 'confidential' markers"),
+						subtitle: .localized("Does not save content that is meant to be considered private and not stored.")
 					)
 				}
 			}
@@ -61,16 +61,16 @@ struct CBSettingsMonitorView: View {
 						_application(for: app.bundleUrl!)
 					}
 				} else {
-					Text("No blacklisted applications.")
+					Text(.localized("No blacklisted applications."))
 						.foregroundStyle(.secondary)
 				}
 				
 				HStack {
-					CBSettingsButton("Add", systemImage: "plus") {
+					CBSettingsButton(.localized("Add"), systemImage: "plus") {
 						_isAppImporterPresenting = true
 					}
 					
-					CBSettingsButton("Delete", systemImage: "minus") {
+					CBSettingsButton(.localized("Delete"), systemImage: "minus") {
 						for app in Array(_selectedApps) {
 							StorageManager.shared.ignoreApplication(for: app, false)
 						}
@@ -82,8 +82,8 @@ struct CBSettingsMonitorView: View {
 				}
 			} header: {
 				CBSettingsHeaderView(
-					"Blacklisted Applications",
-					subtitle: "See what applications the monitor should ignore when copying."
+					.localized("Blacklisted Applications"),
+					subtitle: .localized("See what applications the monitor should ignore when copying.")
 				)
 			}
 		}

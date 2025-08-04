@@ -22,7 +22,7 @@ class CBContentSearchView: NSView {
 	
 	let searchField: NSSearchField = {
 		let field = CBSearchField()
-		field.placeholderString = "Search"
+		field.placeholderString = .localized("Search")
 		field.font = NSFont.systemFont(ofSize: CBConstants.headerFontSize)
 		return field
 	}()
