@@ -106,9 +106,10 @@ extension CBSettingsMonitorView {
 	@ViewBuilder
 	private func _application(for bundle: URL) -> some View {
 		HStack(spacing: 8) {
-			CBQuickLookIconView(url: bundle)
+			Image(nsImage: NSWorkspace.shared.icon(forFile: bundle.path))
+				.resizable()
+				.scaledToFit()
 				.frame(width: 32, height: 32)
-				.cornerRadius(6)
 			
 			Text(bundle.deletingPathExtension().lastPathComponent)
 		}

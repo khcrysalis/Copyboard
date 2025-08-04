@@ -89,4 +89,4 @@ If you maintain your own clipboard manager and want to ignore copies from Copybo
 
 ## License
 
-Project is licensed under the MIT license. ou can see the full details of the license [here](https://github.com/khcrysalis/Copyboard/blob/main/LICENSE).
+Project is licensed under the MIT license. You can see the full details of the license [here](https://github.com/khcrysalis/Copyboard/blob/main/LICENSE).
