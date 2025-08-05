@@ -5,6 +5,12 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '.github/ISSUE_TEMPLATE/**'
+      - '**/*.md'
+      - '.editorconfig'
+      - '.gitignore'
+      - 'LICENSE'
 
 jobs:
   nightly:

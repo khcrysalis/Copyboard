@@ -2,7 +2,7 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/khcrysalis/Copyboard?include_prereleases)](https://github.com/khcrysalis/Copyboard/releases)
 [![GitHub License](https://img.shields.io/github/license/khcrysalis/Copyboard?color=%23C96FAD)](https://github.com/khcrysalis/Copyboard/blob/main/LICENSE)
-[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/khcrysalis)
+[![Sponsor Me](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/khcrysalis)
 
 | ![Copyboard Demo](demo.gif) |
 | :-------------------------: |
