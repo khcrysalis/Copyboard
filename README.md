@@ -84,6 +84,7 @@ If you maintain your own clipboard manager and want to ignore copies from Copybo
 
 - [Samara](https://github.com/khcrysalis) - The maker.
 - [llsc12](https://github.com/llsc12) - Logic for displaying data types, including making `DataTypesKit`.
+- [Paige](https://codeberg.org/paige) - App Icon.
 - [Vap0r1ze](https://github.com/Vap0r1ze) - Sound effects.
 - [FluidMenuBarExtra](https://github.com/lfroms/fluid-menu-bar-extra) - Code/Reference into making `MenuBarKit`.
 
