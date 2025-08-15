@@ -1,15 +1,6 @@
 {
-  "originHash" : "859ca932d633f97274a6793f57617ffeafd5e00b26be713577d4f710ef20a910",
+  "originHash" : "7e78ce2c73b7951739049262dab770acbc71e2e9dee250584b76257b03cfbdce",
   "pins" : [
-    {
-      "identity" : "cursorbounds",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Aeastr/CursorBounds",
-      "state" : {
-        "revision" : "6e94e02c49d19134d9ab09f1d5b22dc9bdb910f0",
-        "version" : "1.1.0"
-      }
-    },
     {
       "identity" : "keyboardshortcuts",
       "kind" : "remoteSourceControl",

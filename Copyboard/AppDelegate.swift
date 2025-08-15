@@ -61,7 +61,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	@MainActor
 	private func _setupKeybinds() {
 		KeyboardShortcuts.onKeyUp(for: .togglePanel) {
-			self.menuBar?.statusItem.toggleWindow()
+			self.menuBar?.statusItem.showWindowAtPoint(
+				at: UserDefaults.standard.bool(forKey: "CB.panelShouldAppearAtMenuBar") == true 
+				? nil 
+				: NSEvent.mouseLocation
+			)
 		}
 	}
 }

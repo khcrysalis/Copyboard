@@ -37,6 +37,9 @@ struct CBSettingsGeneralView: View {
 	@AppStorage("CB.erasureTargetIndex")
 	private var _erasureTargetIndex: Int = 0
 	
+	@AppStorage("CK.shouldPasteAutomatically")
+	private var _shouldPasteAutomatically: Bool = false
+	
 	@State private var _isEraseAlertPresenting: Bool = false
 
 	
@@ -49,7 +52,7 @@ struct CBSettingsGeneralView: View {
 	)!
 	 */
 	
-    var body: some View {
+	var body: some View {
 		Form {
 			_generalSection()
 			_notificationsSection()
@@ -80,7 +83,7 @@ struct CBSettingsGeneralView: View {
 		}
 		#endif
 //		.animation(.interactiveSpring, value: _notificationsAllowed)
-    }
+	}
 }
 
 // MARK: - CBSettingsGeneralView (Extension): Builders
@@ -110,6 +113,7 @@ extension CBSettingsGeneralView {
 			#endif
 			Toggle(.localized("Copy Without Formatting"), isOn: $_copyAsPlainText)
 			Toggle(.localized("Erase History on Quit"), isOn: $_clearHistoryOnQuit)
+			Toggle(.localized("Paste Automatically"), isOn: $_shouldPasteAutomatically)
 		}
 	}
 	

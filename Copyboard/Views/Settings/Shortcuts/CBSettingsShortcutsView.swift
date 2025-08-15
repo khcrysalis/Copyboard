@@ -11,13 +11,16 @@ import KeyboardShortcuts
 #warning("Add plain text key modifier")
 
 struct CBSettingsShortcutsView: View {
+	@AppStorage("CB.panelShouldAppearAtMenuBar") 
+	private var _panelShouldAppearAtMenuBar: Bool = false
+	
 	var body: some View {
 		Form {
 			Section {
 				KeyboardShortcuts.Recorder(for: .togglePanel) {
 					Text(verbatim: .localized("Show %@", arguments: Bundle.main.name))
-				}
-				.padding(.top, 3)
+				}.padding(.top, 3)
+				Toggle(String.localized("Show %@ under menu bar", arguments: Bundle.main.name), isOn: $_panelShouldAppearAtMenuBar)
 			}
 			
 			Section {

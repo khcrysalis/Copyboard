@@ -7,6 +7,7 @@
 
 import AppKit
 import Combine
+import Carbon
 
 // MARK: - ClipboardMonitorManager
 public final class ClipboardMonitorManager: @unchecked Sendable, ObservableObject {
@@ -22,9 +23,16 @@ public final class ClipboardMonitorManager: @unchecked Sendable, ObservableObjec
 	private let _clipboardQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".Queue")
 	private let _pasteboard = NSPasteboard.general
 	private var _lastChangeCount: Int = NSPasteboard.general.changeCount
-	
+
 	public init() {
 		start()
+		
+		NotificationCenter.default.addObserver(
+			self,
+			selector: #selector(_pasteCurrentClipboard),
+			name: .windowDidDisappear,
+			object: nil
+		)
 	}
 	
 	// MARK: Startup
@@ -150,7 +158,11 @@ extension ClipboardMonitorManager {
 		guard let itemsSet = object?.items as? Set<CBObjectItem> else { return }
 		
 		let pasteboardItems: [NSPasteboardItem] = createPasteboardObjects(using: itemsSet, asPlain: asPlain)
-		
+		// theres tons of data in a clipboard, how we do it is
+		// we save every single piece of data from the clipboard
+		// without stripping anything (if wanted), so when adding
+		// to your clipboard, you recieve a 1 to 1 replica of
+		// what was initially copied
 		_pasteboard.clearContents()
 		_pasteboard.writeObjects(pasteboardItems)
 	}
@@ -159,7 +171,7 @@ extension ClipboardMonitorManager {
 		using itemsSet: Set<CBObjectItem>,
 		asPlain: Bool = false
 	) -> [NSPasteboardItem] {
-		return Array(itemsSet).map { item in
+		Array(itemsSet).map { item in
 			let pasteboardItem = NSPasteboardItem()
 			pasteboardItem.setData(Data(), forType: .mainBundle)
 			if let typedData = item.data {
@@ -187,5 +199,30 @@ extension ClipboardMonitorManager {
 			
 			return pasteboardItem
 		}
+	}
+	
+	@objc private func _pasteCurrentClipboard() {
+		guard
+			UserDefaults.standard.bool(forKey: "CK.shouldPasteAutomatically"),
+			AXIsProcessTrustedWithOptions(nil) 
+		else {
+			return 
+		}
+		
+		let source = CGEventSource(stateID: .combinedSessionState)
+		
+		source?.setLocalEventsFilterDuringSuppressionState(
+			[.permitLocalMouseEvents, .permitSystemDefinedEvents],
+			state: .eventSuppressionStateSuppressionInterval
+		)
+		
+		let cmdFlag = CGEventFlags(rawValue: UInt64(NSEvent.ModifierFlags.command.rawValue))
+		
+		let keyVDown = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(kVK_ANSI_V), keyDown: true)
+		let keyVUp = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(kVK_ANSI_V), keyDown: false)
+		keyVDown?.flags = cmdFlag
+		keyVUp?.flags = cmdFlag
+		keyVDown?.post(tap: .cgSessionEventTap)
+		keyVUp?.post(tap: .cgSessionEventTap)
 	}
 }

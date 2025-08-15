@@ -10,4 +10,5 @@ import Foundation.NSNotification
 extension Notification.Name {
 	static let beginMenuTracking = Notification.Name("com.apple.HIToolbox.beginMenuTrackingNotification")
 	static let endMenuTracking = Notification.Name("com.apple.HIToolbox.endMenuTrackingNotification")
+	static let windowDidDisappear = Notification.Name("MBK.windowDidDisappear")
 }

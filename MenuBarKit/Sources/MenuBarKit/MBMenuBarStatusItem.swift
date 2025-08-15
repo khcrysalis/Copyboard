@@ -101,12 +101,16 @@ final public class MBMenuBarStatusItem: NSObject, NSWindowDelegate {
 	// MARK: Actions
 	
 	private func didPressStatusBarButton(_ sender: NSStatusBarButton) {
+		showWindowAtPoint(at: nil)
+	}
+	
+	public func showWindowAtPoint(at screenPoint: CGPoint?) {
 		if window.isVisible {
 			dismissWindow()
 			return
 		}
 		
-		setWindowFrame()
+		setWindowFrame(screenPoint: screenPoint)
 		
 		// Tells the system to persist the menu bar in full screen mode.
 		DistributedNotificationCenter.default().post(name: .beginMenuTracking, object: nil)
@@ -124,7 +128,7 @@ final public class MBMenuBarStatusItem: NSObject, NSWindowDelegate {
 		didPressStatusBarButton(button)
 	}
 	
-	public func dismissWindow() {
+	public func dismissWindow(_ sendNotification: Bool = false) {
 		// Tells the system to cancel persisting the menu bar in full screen mode.
 		DistributedNotificationCenter.default().post(name: .endMenuTracking, object: nil)
 		
@@ -140,6 +144,9 @@ final public class MBMenuBarStatusItem: NSObject, NSWindowDelegate {
 					self.window.orderOut(nil)
 					self.window.alphaValue = 1
 					self._setStatusItemHighlighted(false)
+					if sendNotification {
+						NotificationCenter.default.post(name: .windowDidDisappear, object: nil)
+					}
 				}
 			}
 		}
@@ -158,49 +165,54 @@ final public class MBMenuBarStatusItem: NSObject, NSWindowDelegate {
 	}
 
 	// MARK: Frame
-	
+
 	public func setWindowFrame(
 		size: CGSize? = nil,
-		animate: Bool = false
+		animate: Bool = false,
+		screenPoint: CGPoint? = nil
 	) {
-		guard let statusItemWindow = _statusItem.button?.window else {
-			// Fallback: place window in center of screen
-			if let size {
-				window.setFrame(
-					NSRect(origin: window.frame.origin, size: size),
-					display: true,
-					animate: false
-				)
-			}
-			window.center()
-			return
-		}
-
-		let statusItemFrame = statusItemWindow.frame
 		let newSize = size ?? window.frame.size
+		var origin = CGPoint.zero
 
-		// Center horizontally below the status item
-		let centeredX = statusItemFrame.midX - (newSize.width / 2)
-		var newFrame = CGRect(
-			origin: CGPoint(x: centeredX, y: statusItemFrame.minY - newSize.height - MBConstants.windowMargin),
-			size: newSize
-		)
+		let screen = _statusItem.button?.window?.screen ?? NSScreen.main
+		let visibleFrame = screen?.visibleFrame ?? NSScreen.main!.visibleFrame
 
-		// Clamp within visible screen bounds
-		if let screen = statusItemWindow.screen {
-			let visibleFrame = screen.visibleFrame
-			if newFrame.maxX > visibleFrame.maxX {
-				newFrame.origin.x = visibleFrame.maxX - newFrame.width - MBConstants.windowBorderSize - MBConstants.windowMargin
+		if let point = screenPoint {
+			// Niche: show at point
+			var y = point.y - newSize.height - MBConstants.windowMargin
+			if y < visibleFrame.minY {
+				y = point.y + MBConstants.windowMargin
 			}
-			if newFrame.minX < visibleFrame.minX {
-				newFrame.origin.x = visibleFrame.minX + MBConstants.windowBorderSize + MBConstants.windowMargin
-			}
+
+			var x = point.x - newSize.width / 2
+			
+			x = min(
+				max(x, visibleFrame.minX + MBConstants.windowMargin), 
+				visibleFrame.maxX - newSize.width - MBConstants.windowMargin
+			)
+			
+			origin = CGPoint(x: x, y: y)
+		} else if let statusWindow = _statusItem.button?.window {
+			// Default: below status item
+			var x = statusWindow.frame.midX - newSize.width / 2
+			
+			x = min(
+				max(x, visibleFrame.minX + MBConstants.windowBorderSize + MBConstants.windowMargin),
+				visibleFrame.maxX - newSize.width - MBConstants.windowBorderSize - MBConstants.windowMargin
+			)
+			
+			let y = statusWindow.frame.minY - newSize.height - MBConstants.windowMargin
+			origin = CGPoint(x: x, y: y)
+		} else {
+			// Fallback: center screen
+			origin = CGPoint(
+				x: visibleFrame.midX - newSize.width / 2,
+				y: visibleFrame.midY - newSize.height / 2
+			)
 		}
 
-		guard newFrame != window.frame else {
-			return
-		}
-
+		let newFrame = CGRect(origin: origin, size: newSize)
+		guard newFrame != window.frame else { return }
 		window.setFrame(newFrame, display: true, animate: animate)
 	}
 }

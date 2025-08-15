@@ -404,6 +404,17 @@
         }
       }
     },
+    "Paste Automatically" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste Automatically"
+          }
+        }
+      }
+    },
     "Pause" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -536,6 +547,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Show %@"
+          }
+        }
+      }
+    },
+    "Show %@ under menu bar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show %@ under menu bar"
           }
         }
       }
