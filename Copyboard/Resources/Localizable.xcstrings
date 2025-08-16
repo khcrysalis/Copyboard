@@ -206,6 +206,17 @@
         }
       }
     },
+    "Delete %d Items?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %d Items?"
+          }
+        }
+      }
+    },
     "Does not save content from applications such as 1Password, Keeweb, and Maccy." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -279,6 +290,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Favorite"
+          }
+        }
+      }
+    },
+    "Focus Search on Open" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus Search on Open"
           }
         }
       }
@@ -573,6 +595,17 @@
         }
       }
     },
+    "This action will remove all %d selected items from your clipboard history." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This action will remove all %d selected items from your clipboard history."
+          }
+        }
+      }
+    },
     "Unfavorite" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -614,6 +647,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Week"
+          }
+        }
+      }
+    },
+    "When enabled, typing starts filtering immediately. When disabled, keyboard shortcuts work without leaving the list." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When enabled, typing starts filtering immediately. When disabled, keyboard shortcuts work without leaving the list"
           }
         }
       }
