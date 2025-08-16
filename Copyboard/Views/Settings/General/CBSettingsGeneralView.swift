@@ -42,7 +42,6 @@ struct CBSettingsGeneralView: View {
 	
 	@State private var _isEraseAlertPresenting: Bool = false
 
-	
 	/*
 	@State private var _notificationsAllowed: Bool = true
 	

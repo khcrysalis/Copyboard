@@ -13,6 +13,8 @@ import MenuBarKit
 import KeyboardShortcuts
 
 // MARK: - AppDelegate
+
+@MainActor
 class AppDelegate: NSObject, NSApplicationDelegate {
 	/// We store this for later so we can access
 	/// our existing functions in the extension
@@ -45,7 +47,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	// MARK: Setup
 	
-	@MainActor
 	private func _setupStatusItem() {
 		let content = CBContentView(frame: NSRect(x: 0, y: 0, width: 340, height: 520))
 		
@@ -58,7 +59,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		)
 	}
 	
-	@MainActor
 	private func _setupKeybinds() {
 		KeyboardShortcuts.onKeyUp(for: .togglePanel) {
 			self.menuBar?.statusItem.showWindowAtPoint(

@@ -107,6 +107,10 @@ open class CBBaseContentViewItem: NSCollectionViewItem {
 		dateFormatter.timeStyle = .short
 		dateFormatter.dateStyle = calendar.isDateInToday(date) || calendar.isDateInYesterday(date) ? .none : .medium
 
-		subtitleLabel.stringValue = "\(appName) • \(dateFormatter.string(from: date))"
+		if (!object.isFavorited) {
+			subtitleLabel.stringValue = "\(appName) • \(dateFormatter.string(from: date))";
+		} else {
+			subtitleLabel.stringValue = "\(appName) • \(dateFormatter.string(from: date)) • \(String.localized("Favorite"))";
+		}
 	}
 }

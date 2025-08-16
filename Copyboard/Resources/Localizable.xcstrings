@@ -206,6 +206,17 @@
         }
       }
     },
+    "Delete All" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete All"
+          }
+        }
+      }
+    },
     "Does not save content from applications such as 1Password, Keeweb, and Maccy." : {
       "extractionState" : "manual",
       "localizations" : {

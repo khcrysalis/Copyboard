@@ -84,6 +84,11 @@ class CBCollectionView: NSCollectionView {
 			if let row = selectionIndexes.first {
 				_showPreviewPopover(for: IndexPath(item: row, section: 0))
 			}
+		case 51: // Delete key
+			if let row = selectionIndexPaths.first {
+				(delegate as? CBContentView)?.performDelete(at: row)
+			}
+			return
 		case 53: // Escape key
 			AppDelegate.main.menuBar?.statusItem.toggleWindow()
 		case 125, 126: // Down-Up arrow keys
