@@ -197,7 +197,13 @@ class CBContentView: CBBaseView {
 		}
 	}
 
+	func focusSearch() {
+		(searchView as? CBContentSearchView)?.focus();
+	}
 
+	func focusList() {
+		window?.makeFirstResponder(collectionView);
+	}
 }
 
 // MARK: - CBContentView (Extension): DataSource / Layout

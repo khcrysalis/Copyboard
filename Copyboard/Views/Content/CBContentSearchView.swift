@@ -96,6 +96,11 @@ class CBContentSearchView: NSView {
 	@objc private func searchFieldDidChange(_ sender: NSSearchField) {
 		delegate?.searchFieldDidChange(sender.stringValue)
 	}
+	
+	// Public
+	func focus() {
+		window?.makeFirstResponder(searchField);
+	}
 }
 
 // MARK: - CBSearchDelegate

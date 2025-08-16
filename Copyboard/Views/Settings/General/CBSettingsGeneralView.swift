@@ -41,6 +41,9 @@ struct CBSettingsGeneralView: View {
 	private var _shouldPasteAutomatically: Bool = false
 	
 	@State private var _isEraseAlertPresenting: Bool = false
+	
+	@AppStorage("CB.focusSearchOnOpen")
+	private var _focusSearchOnOpen: Bool = true;
 
 	
 	/*
@@ -114,6 +117,10 @@ extension CBSettingsGeneralView {
 			Toggle(.localized("Copy Without Formatting"), isOn: $_copyAsPlainText)
 			Toggle(.localized("Erase History on Quit"), isOn: $_clearHistoryOnQuit)
 			Toggle(.localized("Paste Automatically"), isOn: $_shouldPasteAutomatically)
+			
+			Toggle(.localized("Focus Search on Open"), isOn: $_focusSearchOnOpen)
+				.help(.localized("When enabled, typing starts filtering immediately. When disabled, keyboard shortcuts work without leaving the list."));
+
 		}
 	}
 	
