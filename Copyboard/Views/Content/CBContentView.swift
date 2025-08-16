@@ -164,6 +164,46 @@ class CBContentView: CBBaseView {
 			item.animateClickFeedback()
 		}
 	}
+	
+	func performDelete(at indexPaths: [IndexPath]) {
+		let source = filteredItems ?? clipboardItems;
+
+		let objectsToDelete: [CBObject] = indexPaths.compactMap { ip in
+			guard ip.item < source.count else { return nil };
+			
+			return source[ip.item];
+		}
+
+		guard !objectsToDelete.isEmpty else { return };
+
+		if objectsToDelete.count == 1 {
+			// Single item: delete immediately (no alert)
+			_deleteItem(for: objectsToDelete[0]);
+			
+			return;
+		}
+
+		// Multiple items: show confirmation
+		let alert = NSAlert();
+		let count = objectsToDelete.count;
+		alert.messageText = String.localized("Delete %d Items?", arguments: count);
+		alert.informativeText = String.localized("This action will remove all %d selected items from your clipboard history.", arguments: count);
+		alert.alertStyle = .warning;
+		alert.addButton(withTitle: String.localized("Delete"));
+		alert.addButton(withTitle: String.localized("Cancel"));
+
+		if alert.runModal() == .alertFirstButtonReturn {
+			objectsToDelete.forEach { _deleteItem(for: $0) };
+		}
+	}
+
+	func focusSearch() {
+		(searchView as? CBContentSearchView)?.focus();
+	}
+
+	func focusList() {
+		window?.makeFirstResponder(collectionView);
+	}
 }
 
 // MARK: - CBContentView (Extension): DataSource / Layout

@@ -19,7 +19,7 @@ class CBCollectionView: NSCollectionView {
 		super.init(frame: .zero)
 		backgroundColors = [.clear]
 		isSelectable = true
-		allowsMultipleSelection = false
+		allowsMultipleSelection = true // set to "true" to allow mass deletion
 		allowsEmptySelection = false
 		setDraggingSourceOperationMask(.copy, forLocal: false)
 	}
@@ -73,6 +73,12 @@ class CBCollectionView: NSCollectionView {
 	
 	override func keyDown(with event: NSEvent) {
 		switch event.keyCode {
+		case 0: // "A" key
+			if event.modifierFlags.contains(.command) {
+				selectAll(nil);
+				return;
+			}
+			
 		case 36: // Return key
 			if let row = selectionIndexes.first {
 				copyItemFromIndex(row: row)
@@ -83,6 +89,11 @@ class CBCollectionView: NSCollectionView {
 		case 49: // Space key
 			if let row = selectionIndexes.first {
 				_showPreviewPopover(for: IndexPath(item: row, section: 0))
+			}
+		case 51: // Delete key
+			if let delegate = delegate as? CBContentView {
+				let indexPaths = Array(selectionIndexPaths);
+				delegate.performDelete(at: indexPaths);
 			}
 		case 53: // Escape key
 			AppDelegate.main.menuBar?.statusItem.toggleWindow()
