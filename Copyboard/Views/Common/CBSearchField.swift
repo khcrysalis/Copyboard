@@ -38,6 +38,14 @@ class CBSearchField: NSSearchField {
 		
 		focusRingType = .none
 	}
+}
+
+// This is a silly fix, essentially to stop the textView from responding
+// to certain events, we override some operations and instead point them
+// to the operations done by the CBContentView
+// https://github.com/khcrysalis/Copyboard/pull/3
+// MARK: - Shortcuts
+extension CBSearchField {
 	override func becomeFirstResponder() -> Bool {
 		if let editor = self.currentEditor() {
 			editor.delegate = self
