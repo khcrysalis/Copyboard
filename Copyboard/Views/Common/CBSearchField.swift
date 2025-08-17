@@ -38,4 +38,67 @@ class CBSearchField: NSSearchField {
 		
 		focusRingType = .none
 	}
+	override func becomeFirstResponder() -> Bool {
+			if let editor = self.currentEditor() {
+				editor.delegate = self
+			}
+			return super.becomeFirstResponder()
+		}
+}
+
+extension CBSearchField: NSTextViewDelegate {
+	func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+		switch commandSelector {
+		case #selector(NSResponder.moveUp(_:)):
+			if let content = self.superview?.superview as? CBContentView {
+				content.collectionView.keyDown(with: NSEvent.keyEvent(
+					 with: .keyDown,
+					 location: .zero,
+					 modifierFlags: [],
+					 timestamp: ProcessInfo.processInfo.systemUptime,
+					 windowNumber: 0,
+					 context: nil,
+					 characters: "",
+					 charactersIgnoringModifiers: "",
+					 isARepeat: false,
+					 keyCode: 126
+				)!)
+			}
+			return true
+		case #selector(NSResponder.moveDown(_:)):
+			if let content = self.superview?.superview as? CBContentView {
+				content.collectionView.keyDown(with: NSEvent.keyEvent(
+					 with: .keyDown,
+					 location: NSPoint(x: 0, y: 0),
+					 modifierFlags: [],
+					 timestamp: ProcessInfo.processInfo.systemUptime,
+					 windowNumber: 0,
+					 context: nil,
+					 characters: "",
+					 charactersIgnoringModifiers: "",
+					 isARepeat: false,
+					 keyCode: 125
+				)!)
+			}
+			return true
+		case #selector(NSResponder.cancelOperation(_:)):
+			if let content = self.superview?.superview as? CBContentView {
+				content.collectionView.keyDown(with: NSEvent.keyEvent(
+					 with: .keyDown,
+					 location: NSPoint(x: 0, y: 0),
+					 modifierFlags: [],
+					 timestamp: ProcessInfo.processInfo.systemUptime,
+					 windowNumber: 0,
+					 context: nil,
+					 characters: "",
+					 charactersIgnoringModifiers: "",
+					 isARepeat: false,
+					 keyCode: 53
+				)!)
+			}
+			return true
+		default:
+			return false
+		}
+	}
 }
