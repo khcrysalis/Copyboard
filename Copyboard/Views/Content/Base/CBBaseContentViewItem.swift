@@ -108,9 +108,9 @@ open class CBBaseContentViewItem: NSCollectionViewItem {
 		dateFormatter.dateStyle = calendar.isDateInToday(date) || calendar.isDateInYesterday(date) ? .none : .medium
 
 		if (!object.isFavorited) {
-			subtitleLabel.stringValue = "\(appName) • \(dateFormatter.string(from: date))";
+			subtitleLabel.stringValue = "\(appName) • \(dateFormatter.string(from: date))"
 		} else {
-			subtitleLabel.stringValue = "\(appName) • \(dateFormatter.string(from: date)) • \(String.localized("Favorite"))";
+			subtitleLabel.stringValue = "\(appName) • \(dateFormatter.string(from: date)) • \(String.localized("Favorite"))"
 		}
 	}
 }

@@ -157,22 +157,6 @@ class CBContentView: CBBaseView {
 	@objc private func _makeCollectionViewFirstResponder() {
 		window?.makeFirstResponder(collectionView)
 	}
-	
-	func copyItemFromIndex(row: Int) {
-		let indexPath = IndexPath(item: row, section: 0)
-		if let item = collectionView.item(at: indexPath) as? CBContentViewItem {
-			item.animateClickFeedback()
-		}
-	}
-	
-	func performDelete(at indexPath: IndexPath) {
-		let source = filteredItems ?? clipboardItems;
-
-		guard indexPath.item < source.count else { return };
-		let object = source[indexPath.item];
-		
-		_deleteItem(for: object);
-	}
 }
 
 // MARK: - CBContentView (Extension): DataSource / Layout
@@ -245,11 +229,6 @@ extension CBContentView: CBCollectionViewDelegate {
 		deleteItem.target = self
 		deleteItem.representedObject = item
 		menu.addItem(deleteItem)
-		
-		let deleteAllItem = NSMenuItem(title: .localized("Delete All"), action: #selector(_handleDeleteAllMenuItem(_:)), keyEquivalent: "");
-		deleteAllItem.target = self;
-		menu.addItem(deleteAllItem);
-		
 		return menu
 	}
 	/// Helper function for copying, for NSMenuItem.
@@ -266,19 +245,6 @@ extension CBContentView: CBCollectionViewDelegate {
 	@objc private func _handleFavoriteMenuItem(_ sender: NSMenuItem) {
 		guard let object = sender.representedObject as? CBObject else { return }
 		_favoriteItem(for: object)
-	}
-	/// Helper function for mass deletion, for NSMenuItem.
-	@objc private func _handleDeleteAllMenuItem(_ sender: NSMenuItem) {
-		let alert = NSAlert();
-		alert.messageText = String.localized ("Erase History?");
-		alert.informativeText = String.localized("Are you sure you want to erase your clipboard history?");
-		alert.alertStyle = .warning;
-		alert.addButton(withTitle: String.localized ("Erase"));
-		alert.addButton(withTitle: String.localized ("Cancel" ));
-		
-		if (alert.runModal() == .alertFirstButtonReturn){
-			StorageManager.shared.eraseHistory();
-		}
 	}
 	/// Helper function for deletion (as plain), for NSMenuItem.
 	@objc private func _handleCopyPlainMenuItem(_ sender: NSMenuItem) {
