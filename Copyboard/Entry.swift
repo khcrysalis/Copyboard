@@ -14,7 +14,7 @@ import ClipKit
 		UserDefaults.standard.register(defaults: [
 			"CK.ignoreApps": true,
 			"CK.ignoreTransient": true,
-			"CK.ignoreConfidential": true
+			"CK.ignoreConfidential": true,
 		])
 		let appDelegate = AppDelegate()
 		NSApplication.shared.delegate = appDelegate

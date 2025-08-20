@@ -13,6 +13,8 @@ import MenuBarKit
 import KeyboardShortcuts
 
 // MARK: - AppDelegate
+
+@MainActor
 class AppDelegate: NSObject, NSApplicationDelegate {
 	/// We store this for later so we can access
 	/// our existing functions in the extension
@@ -45,7 +47,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	// MARK: Setup
 	
-	@MainActor
 	private func _setupStatusItem() {
 		let content = CBContentView(frame: NSRect(x: 0, y: 0, width: 340, height: 520))
 		
@@ -58,7 +59,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		)
 	}
 	
-	@MainActor
 	private func _setupKeybinds() {
 		KeyboardShortcuts.onKeyUp(for: .togglePanel) {
 			self.menuBar?.statusItem.showWindowAtPoint(
@@ -167,7 +167,7 @@ extension AppDelegate {
 		]
 		
 		for (label, seconds) in durations {
-			let item = NSMenuItem(title: label, action: #selector(handlePauseMenuItem(_:)), keyEquivalent: "")
+			let item = NSMenuItem(title: label, action: #selector(_handlePauseMenuItem(_:)), keyEquivalent: "")
 			item.representedObject = seconds
 			item.target = self
 			pauseSubmenu.addItem(item)
@@ -177,13 +177,32 @@ extension AppDelegate {
 		menu.addItem(pauseItem)
 		
 		menu.addItem(NSMenuItem.separator())
+		
+		let deleteAllItem = NSMenuItem(title: .localized("Erase History..."), action: #selector(deleteHistoryWithAlert), keyEquivalent: "\u{8}")
+		deleteAllItem.target = self
+		menu.addItem(deleteAllItem)
+		
+		menu.addItem(NSMenuItem.separator())
 		menu.addItem(NSMenuItem(title: .localized("Quit %@", arguments: Bundle.main.name), action: #selector(NSApp.terminate(_:)), keyEquivalent: "q"))
 		return menu
 	}
 	
-	@objc func handlePauseMenuItem(_ sender: NSMenuItem) {
+	@objc private func _handlePauseMenuItem(_ sender: NSMenuItem) {
 		guard let seconds = sender.representedObject as? TimeInterval else { return }
 		ClipboardMonitorManager.shared.pauseMonitoring(for: seconds)
+	}
+	
+	@objc func deleteHistoryWithAlert() {
+		let alert = NSAlert()
+		alert.messageText = String.localized ("Erase")
+		alert.informativeText = String.localized("Are you sure you want to erase your history?")
+		alert.alertStyle = .warning
+		alert.addButton(withTitle: String.localized ("Erase"))
+		alert.addButton(withTitle: String.localized ("Cancel"))
+		
+		if (alert.runModal() == .alertFirstButtonReturn){
+			StorageManager.shared.eraseHistory()
+		}
 	}
 }
 

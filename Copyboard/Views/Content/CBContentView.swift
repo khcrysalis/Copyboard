@@ -157,13 +157,6 @@ class CBContentView: CBBaseView {
 	@objc private func _makeCollectionViewFirstResponder() {
 		window?.makeFirstResponder(collectionView)
 	}
-	
-	func copyItemFromIndex(row: Int) {
-		let indexPath = IndexPath(item: row, section: 0)
-		if let item = collectionView.item(at: indexPath) as? CBContentViewItem {
-			item.animateClickFeedback()
-		}
-	}
 }
 
 // MARK: - CBContentView (Extension): DataSource / Layout
@@ -236,7 +229,6 @@ extension CBContentView: CBCollectionViewDelegate {
 		deleteItem.target = self
 		deleteItem.representedObject = item
 		menu.addItem(deleteItem)
-		
 		return menu
 	}
 	/// Helper function for copying, for NSMenuItem.

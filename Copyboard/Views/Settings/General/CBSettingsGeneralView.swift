@@ -40,9 +40,6 @@ struct CBSettingsGeneralView: View {
 	@AppStorage("CK.shouldPasteAutomatically")
 	private var _shouldPasteAutomatically: Bool = false
 	
-	@State private var _isEraseAlertPresenting: Bool = false
-
-	
 	/*
 	@State private var _notificationsAllowed: Bool = true
 	
@@ -112,7 +109,6 @@ extension CBSettingsGeneralView {
 			Toggle(.localized("Launch at Login"), isOn: $_launchAtLogin)
 			#endif
 			Toggle(.localized("Copy Without Formatting"), isOn: $_copyAsPlainText)
-			Toggle(.localized("Erase History on Quit"), isOn: $_clearHistoryOnQuit)
 			Toggle(.localized("Paste Automatically"), isOn: $_shouldPasteAutomatically)
 		}
 	}
@@ -146,6 +142,7 @@ extension CBSettingsGeneralView {
 	@ViewBuilder
 	private func _historySection() -> some View {
 		Section {
+			Toggle(.localized("Erase History on Quit"), isOn: $_clearHistoryOnQuit)
 			VStack {
 				Slider(
 					value: Binding(
@@ -186,14 +183,8 @@ extension CBSettingsGeneralView {
 
 		Section {
 			Button(.localized("Erase History...")) {
-				_isEraseAlertPresenting = true
+				AppDelegate.main.deleteHistoryWithAlert()
 			}
-			.alert(.localized("Erase"), isPresented: $_isEraseAlertPresenting, actions: {
-				Button(.localized("Erase"), role: .destructive) { StorageManager.shared.eraseHistory() }
-				Button(.localized("Cancel"), role: .cancel) {}
-			}, message: {
-				Text(.localized("Are you sure you want to erase your history?"))
-			})
 		}
 	}
 }

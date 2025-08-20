@@ -31,6 +31,7 @@ struct CBSettingsShortcutsView: View {
 				• Selection: `↑ ↓`
 				• Copy: `⏎`
 				• Preview: `␣`
+				• Delete: `⌫` (Delete key — works for single or multiple selections)
 				""").foregroundStyle(.secondary)
 			}
 			

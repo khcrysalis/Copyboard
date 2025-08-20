@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import ClipKit
 
 // MARK: - CBCollectionView
 class CBCollectionView: NSCollectionView {
@@ -74,15 +75,19 @@ class CBCollectionView: NSCollectionView {
 	override func keyDown(with event: NSEvent) {
 		switch event.keyCode {
 		case 36: // Return key
-			if let row = selectionIndexes.first {
-				copyItemFromIndex(row: row)
-				deselectItems(at: [IndexPath(item: row, section: 0)])
+			if let indexPath = selectionIndexPaths.first {
+				_copyItemFromIndex(for: indexPath)
+				deselectItems(at: [indexPath])
 			} else {
 				selectItems(at: [IndexPath(item: 0, section: 0)], scrollPosition: .top)
 			}
 		case 49: // Space key
-			if let row = selectionIndexes.first {
-				_showPreviewPopover(for: IndexPath(item: row, section: 0))
+			if let indexPath = selectionIndexPaths.first {
+				_showPreviewPopover(for: indexPath)
+			}
+		case 51: // Delete key
+			if let indexPath = selectionIndexPaths.first {
+				_deleteHistoryItemFromIndex(for: indexPath)
 			}
 		case 53: // Escape key
 			AppDelegate.main.menuBar?.statusItem.toggleWindow()
@@ -101,7 +106,7 @@ class CBCollectionView: NSCollectionView {
 				selectionIndexes = IndexSet()
 				let indexPath = IndexPath(item: index, section: 0)
 				selectItems(at: [indexPath], scrollPosition: .centeredVertically)
-				copyItemFromIndex(row: index)
+				_copyItemFromIndex(for: indexPath)
 			}
 		default:
 			super.keyDown(with: event)
@@ -114,11 +119,14 @@ class CBCollectionView: NSCollectionView {
 		Int(keyCode) - 18
 	}
 	
-	func copyItemFromIndex(row: Int) {
-		let indexPath = IndexPath(item: row, section: 0)
-		if let item = item(at: indexPath) as? CBBaseContentViewItem {
-			item.animateClickFeedback()
-		}
+	private func _copyItemFromIndex(for indexPath: IndexPath) {
+		guard let item = item(at: indexPath) as? CBContentViewItem else { return }
+		item.animateClickFeedback()
+	}
+	
+	private func _deleteHistoryItemFromIndex(for indexPath: IndexPath) {
+		guard let item = item(at: indexPath) as? CBContentViewItem else { return }
+		StorageManager.shared.deleteHistory(for: item.object)
 	}
 	
 	private func _showPreviewPopover(for indexPath: IndexPath) {
