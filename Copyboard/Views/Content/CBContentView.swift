@@ -133,14 +133,6 @@ class CBContentView: CBBaseView {
 				self?._reloadClipboardItems()
 			}
 			.store(in: &_cancellables)
-		
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(_makeCollectionViewFirstResponder),
-			name: .collectionViewGetFirstResponder,
-			object: nil
-		)
-		
 		// on first run, we post a didchange notification after setting up listeners
 		NotificationCenter.default.post(name: .clipboardDidChange, object: nil)
 	}
@@ -152,10 +144,6 @@ class CBContentView: CBBaseView {
 				self.clipboardItems = results
 			}
 		}
-	}
-	
-	@objc private func _makeCollectionViewFirstResponder() {
-		window?.makeFirstResponder(collectionView)
 	}
 }
 
@@ -206,7 +194,7 @@ extension CBContentView: CBCollectionViewDelegate {
 		let menu = NSMenu()
 		
 		let favoriteTitle: String = item.isFavorited ? .localized("Unfavorite") : .localized("Favorite")
-		let favoriteItem = NSMenuItem(title: favoriteTitle, action: #selector(_handleFavoriteMenuItem(_:)), keyEquivalent: "")
+		let favoriteItem = NSMenuItem(title: favoriteTitle, action: #selector(_handleFavoriteMenuItem(_:)), keyEquivalent: "f")
 		favoriteItem.target = self
 		favoriteItem.representedObject = item
 		menu.addItem(favoriteItem)
@@ -225,7 +213,7 @@ extension CBContentView: CBCollectionViewDelegate {
 		
 		menu.addItem(NSMenuItem.separator())
 		
-		let deleteItem = NSMenuItem(title: .localized("Delete"), action: #selector(_handleDeleteMenuItem(_:)), keyEquivalent: "")
+		let deleteItem = NSMenuItem(title: .localized("Delete"), action: #selector(_handleDeleteMenuItem(_:)), keyEquivalent: "\u{8}")
 		deleteItem.target = self
 		deleteItem.representedObject = item
 		menu.addItem(deleteItem)

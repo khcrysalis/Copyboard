@@ -73,7 +73,6 @@ open class CBBaseContentViewItem: NSCollectionViewItem {
 			using: object,
 			asPlain: UserDefaults.standard.bool(forKey: "CB.copyAsPlainText")
 		)
-		NotificationCenter.default.post(name: .collectionViewGetFirstResponder, object: nil)
 		AppDelegate.main.menuBar?.statusItem.dismissWindow(true)
 	}
 	

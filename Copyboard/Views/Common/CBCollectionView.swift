@@ -73,40 +73,47 @@ class CBCollectionView: NSCollectionView {
 	}
 	
 	override func keyDown(with event: NSEvent) {
-		switch event.keyCode {
-		case 36: // Return key
+		switch (
+			event.modifierFlags.contains(.command),
+			event.charactersIgnoringModifiers ?? "",
+			event.keyCode
+		) {
+		case (true, let index, _) where Int(index).map({ 1...9 ~= $0 }) ?? false: // Cmd+1–9
+			if 
+				let index = Int(index),
+				index - 1 >= 0 && index - 1 < numberOfItems(inSection: 0) 
+			{
+				selectionIndexes = IndexSet()
+				let indexPath = IndexPath(item: index - 1, section: 0)
+				selectItems(at: [indexPath], scrollPosition: .centeredVertically)
+				_copyItemFromIndex(for: indexPath)
+			}
+		case (true, _, 51): // Cmd+Delete
+			if let indexPath = selectionIndexPaths.first {
+				_deleteHistoryItemFromIndex(for: indexPath)
+			}
+		case (false, _, 53): // Escape key
+			AppDelegate.main.menuBar?.statusItem.toggleWindow()
+		case (true, _, 35): // P Key
+			if let indexPath = selectionIndexPaths.first {
+				_showPreviewPopover(for: indexPath)
+			}
+		case (true, _, 3): // F Key
+			if let indexPath = selectionIndexPaths.first {
+				_favoriteHistoryItemFromIndex(for: indexPath)
+			}
+		case (false, _, 36): // Return key
 			if let indexPath = selectionIndexPaths.first {
 				_copyItemFromIndex(for: indexPath)
 				deselectItems(at: [indexPath])
 			} else {
 				selectItems(at: [IndexPath(item: 0, section: 0)], scrollPosition: .top)
 			}
-		case 49: // Space key
-			if let indexPath = selectionIndexPaths.first {
-				_showPreviewPopover(for: indexPath)
-			}
-		case 51: // Delete key
-			if let indexPath = selectionIndexPaths.first {
-				_deleteHistoryItemFromIndex(for: indexPath)
-			}
-		case 53: // Escape key
-			AppDelegate.main.menuBar?.statusItem.toggleWindow()
-		case 125, 126: // Down-Up arrow keys
+		case (false, _, 125), (false, _, 126): // Down/Up arrows
 			if selectionIndexes.first != nil {
 				super.keyDown(with: event)
 			} else {
 				selectItems(at: [IndexPath(item: 0, section: 0)], scrollPosition: .top)
-			}
-		case 18...26 where event.keyCode != 27: // 1–9 keys
-			let index = _numberKeyIndex(for: event.keyCode)
-			if
-				index >= 0,
-				index < numberOfItems(inSection: 0)
-			{
-				selectionIndexes = IndexSet()
-				let indexPath = IndexPath(item: index, section: 0)
-				selectItems(at: [indexPath], scrollPosition: .centeredVertically)
-				_copyItemFromIndex(for: indexPath)
 			}
 		default:
 			super.keyDown(with: event)
@@ -114,10 +121,6 @@ class CBCollectionView: NSCollectionView {
 	}
 	
 	// MARK: Actions
-	
-	private func _numberKeyIndex(for keyCode: UInt16) -> Int {
-		Int(keyCode) - 18
-	}
 	
 	private func _copyItemFromIndex(for indexPath: IndexPath) {
 		guard let item = item(at: indexPath) as? CBContentViewItem else { return }
@@ -127,6 +130,11 @@ class CBCollectionView: NSCollectionView {
 	private func _deleteHistoryItemFromIndex(for indexPath: IndexPath) {
 		guard let item = item(at: indexPath) as? CBContentViewItem else { return }
 		StorageManager.shared.deleteHistory(for: item.object)
+	}
+	
+	private func _favoriteHistoryItemFromIndex(for indexPath: IndexPath) {
+		guard let item = item(at: indexPath) as? CBContentViewItem else { return }
+		StorageManager.shared.toggleFavoriteHistory(for: item.object)
 	}
 	
 	private func _showPreviewPopover(for indexPath: IndexPath) {
@@ -153,7 +161,7 @@ class CBCollectionView: NSCollectionView {
 }
 
 extension CBCollectionView {
-	override var acceptsFirstResponder: Bool { true }
+	override var acceptsFirstResponder: Bool { false }
 }
 
 // MARK: - CBCollectionViewDelegate
