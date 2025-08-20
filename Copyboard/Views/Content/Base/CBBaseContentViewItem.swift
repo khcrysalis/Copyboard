@@ -102,7 +102,7 @@ open class CBBaseContentViewItem: NSCollectionViewItem {
 		
 		let calendar = Calendar.current
 		let dateFormatter = DateFormatter()
-		let date = object.dateAdded!
+		let date = object.dateAdded ?? Date()
 		dateFormatter.timeStyle = .short
 		dateFormatter.dateStyle = calendar.isDateInToday(date) || calendar.isDateInYesterday(date) ? .none : .medium
 

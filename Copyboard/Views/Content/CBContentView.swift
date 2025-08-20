@@ -141,6 +141,10 @@ class CBContentView: CBBaseView {
 		DispatchQueue.global(qos: .userInitiated).async {
 			let results = StorageManager.shared.fetchAllCBObjectsSortedByDate()
 			DispatchQueue.main.async {
+				self.filteredItems = self.filteredObjects(
+					with: (self.searchView as? CBContentSearchView)?.searchField.stringValue ?? "", 
+					in: results
+				)
 				self.clipboardItems = results
 			}
 		}
