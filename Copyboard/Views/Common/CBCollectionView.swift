@@ -96,7 +96,7 @@ class CBCollectionView: NSCollectionView {
 			AppDelegate.main.menuBar?.statusItem.toggleWindow()
 		case (true, _, 35): // P Key
 			if let indexPath = selectionIndexPaths.first {
-				_showPreviewPopover(for: indexPath)
+				showPreviewPopover(for: indexPath)
 			}
 		case (true, _, 3): // F Key
 			if let indexPath = selectionIndexPaths.first {
@@ -137,7 +137,7 @@ class CBCollectionView: NSCollectionView {
 		StorageManager.shared.toggleFavoriteHistory(for: item.object)
 	}
 	
-	private func _showPreviewPopover(for indexPath: IndexPath) {
+	func showPreviewPopover(for indexPath: IndexPath) {
 		guard let item = item(at: indexPath) as? CBContentViewItem else { return }
 		
 		// Avoid showing multiple

@@ -449,6 +449,17 @@
         }
       }
     },
+    "Preview" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview"
+          }
+        }
+      }
+    },
     "Quit %@" : {
       "comment" : "Quit Copyboard",
       "extractionState" : "manual",

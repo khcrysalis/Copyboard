@@ -27,12 +27,12 @@ struct CBSettingsShortcutsView: View {
 				#warning("unfinished")
 				Text("""
 				These are the default keybinds that can be used when you're interacting with the clipboard items.
-				• Quick Copy: `⌘ 1...9`
-				• Selection: `↑ ↓`
-				• Copy: `⏎`
-				• Preview: `⌘ + p`
-				• Favorite: `⌘ + f`
-				• Delete: `⌘ + ⌫`
+				• Quick Copy:  `⌘ + 1...9`
+				• Selection:  `↑ ↓`
+				• Copy:  `⏎`
+				• Preview:  `⌘ + p`
+				• Favorite:  `⌘ + f`
+				• Delete:  `⌘ + ⌫`
 				""").foregroundStyle(.secondary)
 			}
 			

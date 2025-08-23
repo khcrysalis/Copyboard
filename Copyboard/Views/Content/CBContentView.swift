@@ -27,7 +27,7 @@ class CBContentView: CBBaseView {
 	
 	// MARK: Views
 	
-	lazy var collectionView: NSCollectionView = {
+	lazy var collectionView: CBCollectionView = {
 		let view = CBCollectionView()
 		view.collectionViewLayout = .paddedListLayout(direction: .vertical)
 		view.dataSource = self
@@ -197,23 +197,35 @@ extension CBContentView: CBCollectionViewDelegate {
 		
 		let menu = NSMenu()
 		
-		let favoriteTitle: String = item.isFavorited ? .localized("Unfavorite") : .localized("Favorite")
-		let favoriteItem = NSMenuItem(title: favoriteTitle, action: #selector(_handleFavoriteMenuItem(_:)), keyEquivalent: "f")
+		let previewItem = NSMenuItem(title: .localized("Preview"), action: #selector(_handlePreviewItem(_:)), keyEquivalent: "p")
+		previewItem.target = self
+		previewItem.representedObject = indexPath
+		menu.addItem(previewItem)
+		
+		menu.addItem(NSMenuItem.separator())
+		
+		let favoriteItem = NSMenuItem(title: item.isFavorited ? .localized("Unfavorite") : .localized("Favorite"), action: #selector(_handleFavoriteMenuItem(_:)), keyEquivalent: "f")
 		favoriteItem.target = self
 		favoriteItem.representedObject = item
 		menu.addItem(favoriteItem)
 		
 		menu.addItem(NSMenuItem.separator())
 		
+		let copyParentItem = NSMenuItem(title: .localized("Copy"), action: nil, keyEquivalent: "")
+		let copySubmenu = NSMenu()
+
 		let copyItem = NSMenuItem(title: .localized("Copy"), action: #selector(_handleCopyMenuItem(_:)), keyEquivalent: "")
 		copyItem.target = self
 		copyItem.representedObject = item
-		menu.addItem(copyItem)
-		
+		copySubmenu.addItem(copyItem)
+
 		let copyPlainItem = NSMenuItem(title: .localized("Copy Without Formatting"), action: #selector(_handleCopyPlainMenuItem(_:)), keyEquivalent: "")
 		copyPlainItem.target = self
 		copyPlainItem.representedObject = item
-		menu.addItem(copyPlainItem)
+		copySubmenu.addItem(copyPlainItem)
+
+		copyParentItem.submenu = copySubmenu
+		menu.addItem(copyParentItem)
 		
 		menu.addItem(NSMenuItem.separator())
 		
@@ -243,6 +255,11 @@ extension CBContentView: CBCollectionViewDelegate {
 		guard let object = sender.representedObject as? CBObject else { return }
 		_copyItem(for: object, asPlain: true)
 	}
+	/// Helper function for preview, for NSMenuItem
+	@objc private func _handlePreviewItem(_ sender: NSMenuItem) {
+		guard let object = sender.representedObject as? IndexPath else { return }
+		_previewItem(for: object)
+	}
 	/// Deletes history object entirely.
 	/// - Parameter object: History object
 	private func _deleteItem(for object: CBObject) {
@@ -258,6 +275,11 @@ extension CBContentView: CBCollectionViewDelegate {
 	/// - Parameter object: History object
 	private func _favoriteItem(for object: CBObject) {
 		StorageManager.shared.toggleFavoriteHistory(for: object)
+	}
+	/// Preview history item.
+	/// - Parameter indexPath: indexPath
+	private func _previewItem(for indexPath: IndexPath) {
+		collectionView.showPreviewPopover(for: indexPath)
 	}
 }
 
