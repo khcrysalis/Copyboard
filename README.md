@@ -70,16 +70,6 @@ If you maintain your own clipboard manager and want to ignore copies from Copybo
 | <img src="https://raw.githubusercontent.com/khcrysalis/github-sponsor-graph/main/graph.png"> |
 | _**"samara is cute" - Vendicated**_ |
 
-## Star History
-
-<a href="https://star-history.com/#khcrysalis/Copyboard&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=khcrysalis/Copyboard&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=khcrysalis/Copyboard&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=khcrysalis/Copyboard&type=Date" />
- </picture>
-</a>
-
 ## Acknowledgements
 
 - [Samara](https://github.com/khcrysalis) - The maker.
