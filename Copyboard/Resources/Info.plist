@@ -15,5 +15,13 @@
 			</array>
 		</dict>
 	</array>
+	<key>SUEnableDownloaderService</key>
+	<true/>
+	<key>SUEnableInstallerLauncherService</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://github.com/khcrysalis/Copyboard/releases/latest/download/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>0jcLch5+zoYsVnfx2/MJGz0skKio2cLP7JsYCGzzpFA=</string>
 </dict>
 </plist>

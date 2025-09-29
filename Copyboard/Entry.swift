@@ -15,6 +15,7 @@ import ClipKit
 			"CK.ignoreApps": true,
 			"CK.ignoreTransient": true,
 			"CK.ignoreConfidential": true,
+			"CB.automaticUpdates": true,
 		])
 		let appDelegate = AppDelegate()
 		NSApplication.shared.delegate = appDelegate

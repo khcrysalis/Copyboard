@@ -1,0 +1,67 @@
+name: Create New Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  nightly:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup dependencies
+        run: |
+          brew install create-dmg
+          sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+
+      - name: Certificates
+        uses: apple-actions/import-codesign-certs@v5
+        with:
+          p12-file-base64: ${{ secrets.DEV_ID_P12_BASE64 }}
+          p12-password: ${{ secrets.DEV_ID_P12_PASSWORD }}
+
+      - name: Build Artifacts
+        run: make
+
+      - name: Codesign & Notarize
+        run: |
+          codesign --deep --force --options runtime --sign "${{ secrets.DEV_ID_IDENTITY_NAME }}" packages/Copyboard.app
+          ln -s /Applications packages/Applications
+          create-dmg Copyboard.dmg packages
+          xcrun notarytool submit Copyboard.dmg --apple-id "${{ secrets.APPLE_ID_EMAIL }}" --password "${{ secrets.APPLE_ID_PASSWORD }}" --team-id "${{ secrets.APPLE_ID_TEAM }}" --wait
+          xcrun stapler staple Copyboard.dmg
+
+      - name: Setup Sparkle
+        id: get_version
+        run: |
+          curl -L -o Sparkle.tar.xz https://github.com/sparkle-project/Sparkle/releases/download/2.8.0/Sparkle-2.8.0.tar.xz
+          tar -xJf Sparkle.tar.xz
+          mkdir update
+          mv Copyboard.dmg update/
+          chmod +x ./bin/generate_appcast
+          
+          VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" packages/*.app/Contents/Info.plist)
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
+      - name: Make Appcast
+        run: |
+          echo "$SPARKLE_PRIVATE_KEY" | ./bin/generate_appcast --ed-key-file - --download-url-prefix https://github.com/khcrysalis/Copyboard/releases/download/nightly/ update/
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+
+      - name: Draft
+        uses: softprops/action-gh-release@v2
+        with:
+          name: EasyPKG v${{ env.VERSION }}
+          tag_name: v${{ env.VERSION }}
+          files: |
+            update/EasyPKG.dmg
+            update/appcast.xml
+          body: |
+            ## What's Changed
+          generate_release_notes: false
+          fail_on_unmatched_files: true
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}

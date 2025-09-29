@@ -11,6 +11,7 @@
 		33DCD12F2DD0980000F6AC4F /* DataTypesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 33DCD12E2DD0980000F6AC4F /* DataTypesKit */; };
 		576B48C92E370C4B007CE62D /* MenuBarKit in Frameworks */ = {isa = PBXBuildFile; productRef = 576B48C82E370C4B007CE62D /* MenuBarKit */; };
 		576B52952E3B0666007CE62D /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 576B52942E3B0666007CE62D /* KeyboardShortcuts */; };
+		579E64F92E8A43CA00624B01 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 579E64F82E8A43CA00624B01 /* Sparkle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				579E64F92E8A43CA00624B01 /* Sparkle in Frameworks */,
 				576B48C92E370C4B007CE62D /* MenuBarKit in Frameworks */,
 				576B52952E3B0666007CE62D /* KeyboardShortcuts in Frameworks */,
 				33DCD12F2DD0980000F6AC4F /* DataTypesKit in Frameworks */,
@@ -93,6 +95,7 @@
 				33C576A92E0CCFD100174BA1 /* ClipKit */,
 				576B48C82E370C4B007CE62D /* MenuBarKit */,
 				576B52942E3B0666007CE62D /* KeyboardShortcuts */,
+				579E64F82E8A43CA00624B01 /* Sparkle */,
 			);
 			productName = Copyboard;
 			productReference = 33B22B482D97F80F002B1576 /* Copyboard.app */;
@@ -127,6 +130,7 @@
 				33C576A82E0CCFD100174BA1 /* XCLocalSwiftPackageReference "ClipKit" */,
 				576B48C72E370C4B007CE62D /* XCLocalSwiftPackageReference "MenuBarKit" */,
 				576B52932E3B0666007CE62D /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				579E64F72E8A43CA00624B01 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 33B22B492D97F80F002B1576 /* Products */;
@@ -287,7 +291,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Copyboard/Supporting Files/Copyboard.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Copyboard/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Copyboard;
@@ -316,7 +320,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Copyboard/Supporting Files/Copyboard.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0;
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -387,6 +391,14 @@
 				version = 2.3.0;
 			};
 		};
+		579E64F72E8A43CA00624B01 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -406,6 +418,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 576B52932E3B0666007CE62D /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
+		};
+		579E64F82E8A43CA00624B01 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 579E64F72E8A43CA00624B01 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

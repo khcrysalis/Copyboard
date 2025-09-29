@@ -9,11 +9,40 @@ import SwiftUI
 import ServiceManagement
 import UserNotifications
 import ClipKit
+#if !DEBUG
+import Sparkle
+#endif
 
 #warning("fix koda weird padding isuse??")
 #warning("add uhm a app whitelist for HTML because it sucks lol")
 #warning("add preview settings from clipper (theyre fancy)")
 #warning("add support for paste modes, clicking should allow either copying to clipboard or pasting to active app")
+
+#if !DEBUG
+// MARK: - EGCheckForUpdatesViewModel
+final class EGCheckForUpdatesViewModel: ObservableObject {
+	@Published var canCheckForUpdates = false
+	
+	init(updater: SPUUpdater) {
+		updater.publisher(for: \.canCheckForUpdates).assign(to: &$canCheckForUpdates)
+	}
+}
+
+struct GBCheckForUpdatesButton: View {
+	@ObservedObject private var _checkForUpdatesViewModel: EGCheckForUpdatesViewModel
+	private let _updater: SPUUpdater
+	
+	init(updater: SPUUpdater) {
+		self._updater = updater
+		self._checkForUpdatesViewModel = EGCheckForUpdatesViewModel(updater: updater)
+	}
+	
+	var body: some View {
+		Button(.localized("Check for Updates..."), action: _updater.checkForUpdates)
+			.disabled(!_checkForUpdatesViewModel.canCheckForUpdates)
+	}
+}
+#endif
 
 // MARK: - CBSettingsGeneralView
 struct CBSettingsGeneralView: View {
@@ -22,6 +51,10 @@ struct CBSettingsGeneralView: View {
 		SMAppService.mainApp.status == .enabled
 	}()
 	#endif
+	
+	@AppStorage("CB.automaticUpdates")
+	private var _automaticUpdates: Bool = true
+	
 	@AppStorage("CB.copyAsPlainText")
 	private var _copyAsPlainText: Bool = false
 	
@@ -102,9 +135,17 @@ extension CBSettingsGeneralView {
 			}
 		}
 		 */
+		#if !DEBUG
+		Section {
+			Toggle(.localized("Check for Updates Automatically"), isOn: $_automaticUpdates)
+			GBCheckForUpdatesButton(updater: AppDelegate.updaterController.updater)
+		}
+		.onChange(of: _automaticUpdates) { newValue in
+			AppDelegate.updaterController.updater.automaticallyChecksForUpdates = newValue
+		}
+		#endif
 		
 		Section {
-			Toggle(.localized("Check for Updates Automatically"), isOn: .constant(false)).disabled(true)
 			#if !DEBUG
 			Toggle(.localized("Launch at Login"), isOn: $_launchAtLogin)
 			#endif

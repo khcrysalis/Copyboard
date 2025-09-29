@@ -11,6 +11,9 @@ import ClipKit
 import UserNotifications
 import MenuBarKit
 import KeyboardShortcuts
+#if !DEBUG
+import Sparkle
+#endif
 
 // MARK: - AppDelegate
 
@@ -22,6 +25,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	var menuBar: MBMenuBar?
 	private var _settingsWindowController: NSWindowController?
+	#if !DEBUG
+	static var updaterController: SPUStandardUpdaterController!
+	#endif
 	
 	// MARK: Load
 	
@@ -30,6 +36,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //		UNUserNotificationCenter.current().delegate = self
 		_ = ClipboardMonitorManager.shared
 		_ = CBNotificationManager.shared
+		#if !DEBUG
+		Self.updaterController = SPUStandardUpdaterController(
+			startingUpdater: true, 
+			updaterDelegate: nil, 
+			userDriverDelegate: nil
+		)
+		Self.updaterController.updater.automaticallyChecksForUpdates = UserDefaults.standard.bool(forKey: "CB.automaticUpdates")
+		Self.updaterController.updater.updateCheckInterval = 3600
+		#endif
 		_setupStatusItem()
 		_setupKeybinds()
 	}
