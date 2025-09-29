@@ -53,10 +53,10 @@ jobs:
       - name: Draft
         uses: softprops/action-gh-release@v2
         with:
-          name: EasyPKG v${{ env.VERSION }}
+          name: Copyboard v${{ env.VERSION }}
           tag_name: v${{ env.VERSION }}
           files: |
-            update/EasyPKG.dmg
+            update/Copyboard.dmg
             update/appcast.xml
           body: |
             ## What's Changed
