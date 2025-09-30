@@ -13,10 +13,8 @@ import ClipKit
 import Sparkle
 #endif
 
-#warning("fix koda weird padding isuse??")
 #warning("add uhm a app whitelist for HTML because it sucks lol")
 #warning("add preview settings from clipper (theyre fancy)")
-#warning("add support for paste modes, clicking should allow either copying to clipboard or pasting to active app")
 
 #if !DEBUG
 // MARK: - EGCheckForUpdatesViewModel

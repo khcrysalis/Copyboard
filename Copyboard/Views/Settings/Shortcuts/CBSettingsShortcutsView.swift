@@ -8,8 +8,6 @@
 import SwiftUI
 import KeyboardShortcuts
 
-#warning("Add plain text key modifier")
-
 struct CBSettingsShortcutsView: View {
 	@AppStorage("CB.panelShouldAppearAtMenuBar") 
 	private var _panelShouldAppearAtMenuBar: Bool = false
